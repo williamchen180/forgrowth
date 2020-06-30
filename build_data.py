@@ -58,7 +58,7 @@ for i in range(1, sheet.max_row + 1):
 print(stock_100)
 
 sheet = wb_obj['名稱代號']
-for i in range(2, sheet.max_row + 1):
+for i in range(62, sheet.max_row + 1):
     symbol = load_cell(sheet, i, 1)
 
     if symbol.value in stock_100:

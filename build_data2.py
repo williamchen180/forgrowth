@@ -58,7 +58,7 @@ sheet = wb_obj['分析']
 last_date = ''
 last_policy = ''
 
-for i in range(27, sheet.max_row + 1):
+for i in range(62, sheet.max_row + 1):
     date = load_cell(sheet, i, 1)
     policy = load_cell(sheet, i, 2)
     symbol = load_cell(sheet, i, 3)

@@ -59,6 +59,7 @@ try:
             print(r)
             for j in range(0, count):
                 set_cell(sheet, i + j, column, str(r[j]))
+                set_cell(sheet, i + j, column + 1, j)
             skip = range(i + 1, i + 1 + count)
 
 except Exception as e:

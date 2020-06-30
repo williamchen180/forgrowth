@@ -34,45 +34,6 @@ def column_number(s):
     return ret
 
 
-def get_history(symbol, unix_sod, unix_today):
-    filepath = 'history/' + symbol + '.pickle'
-
-    if os.path.isfile(filepath):
-        with open(filepath, 'rb') as f:
-            history = pickle.load(f)
-        return history
-    else:
-        url = f'https://ws.api.cnyes.com/charting/api/v1/history?resolution=D&symbol=TWS:{symbol}:STOCK&from={unix_today}&to={unix_sod}&quote=1'
-
-        print(url)
-        r = requests.get(url)
-        # print(r.content)
-        data = json.loads(r.content)
-        if data['statusCode'] != 200:
-            print("HTTP request error!")
-            return None
-
-        history = []
-
-        for t in data['data']['t']:
-            # print(datetime.datetime.utcfromtimestamp(t).strftime('%Y-%m-%d'))
-            pass
-
-        T = data['data']['t']
-        O = data['data']['o']
-        H = data['data']['h']
-        L = data['data']['l']
-        C = data['data']['c']
-        V = data['data']['v']
-
-        for t, o, h, l, c, v in zip(T, O, H, L, C, V):
-            history.insert(0, (t, o, h, l, c, v))
-
-        with open(filepath, 'wb') as f:
-            pickle.dump(history, f)
-
-        return get_history(symbol, unix_sod, unix_today)
-
 
 my_work_book = 'growth3.xlsx'
 wb_obj = openpyxl.load_workbook(my_work_book)
@@ -101,11 +62,13 @@ for i in range(2, sheet.max_row + 1):
 
     #print(f'date: {date} {unix_sod}')
 
-    sod_found = False
 
     # h: {T, O, H, L, C, V}
     number_day = 0
     column_idx = 0
+    base_price = -1
+    sod_found = False
+
     for h in history:
         #print(h)
         hdate = datetime.datetime.fromtimestamp(h[0])
@@ -113,19 +76,25 @@ for i in range(2, sheet.max_row + 1):
         if (hdate.year, hdate.month, hdate.day) == (date.year, date.month, date.day):
             print('found the date:', date)
             sod_found = True
+            continue
+
+        if sod_found is not True:
+            continue
+
+        # The base price is the Open of 'NEXT DAY'
+        if base_price == -1:
             base_price = float(h[1])
             column_idx = column_number('AD')
             set_cell(sheet, i, column_idx, base_price)
             column_idx = column_idx + 1
-
-        if sod_found is not True:
-            continue
+            number_day = 1
 
         # print('base_price:', base_price)
 
         if number_day in mark_days:
             percentage = calculate_percentage(base_price, h[4])
-            set_cell(sheet, i, column_idx, percentage)
+            #set_cell(sheet, i, column_idx, percentage)
+            set_cell(sheet, i, column_idx, h[4])
             column_idx = column_idx + 1
 
         number_day = number_day + 1

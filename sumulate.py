@@ -79,7 +79,7 @@ for i in range(62, sheet.max_row + 1):
         symbol = load_value(sheet, i, column_idx('D'))
         name = load_value(sheet, i, column_idx('E'))
         base_price = load_value(sheet, i, column_idx('K'))
-        percentage = load_value(sheet, i, column_idx('O'))  # 4 day
+        percentage = load_value(sheet, i, column_idx('Q'))  # 4 day
         rand_idx = load_value(sheet, i, column_idx('U'))
 
         history_trade.append((date, symbol, name, base_price, percentage, rand_idx))

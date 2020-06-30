@@ -72,7 +72,7 @@ try:
 
         history = []
         for t in data['data']['t']:
-            #print(datetime.datetime.utcfromtimestamp(t).strftime('%Y-%m-%d'))
+            print(datetime.datetime.utcfromtimestamp(t).strftime('%Y-%m-%d'))
             pass
 
         T = data['data']['t']
@@ -106,7 +106,8 @@ try:
                 percentage = calculate_percentage(base_price, history[j][3])
                 #print(percentage)
 
-                set_cell(sheet, i, column_idx, percentage)
+                #set_cell(sheet, i, column_idx, percentage)
+                set_cell(sheet, i, column_idx, history[j][3])
 
                 column_idx = column_idx + 1
 
