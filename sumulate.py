@@ -8,44 +8,13 @@ import random
 import openpyxl
 import requests
 
+from libexcel import *
+
 my_work_book = 'growth.xlsx'
 
 wb_obj = openpyxl.load_workbook(my_work_book)
 
 print(wb_obj.sheetnames)
-
-
-def calculate_percentage(buy, sell):
-    return (sell - buy) / buy
-
-
-def convert_to_str(input):
-    if type(input) is str:
-        return input.rstrip(' ').lstrip(' ').rstrip(' ')
-
-    if type(input) is int:
-        return str(input)
-
-    return input
-
-
-def load_cell(s, r, c):
-    x = s.cell(row=r, column=c)
-    x.value = convert_to_str(x.value)
-    return x
-
-
-def load_value(s, r, c):
-    return load_cell(s, r, c).value
-
-
-def set_cell(s, r, c, value):
-    cell = s.cell(row=r, column=c)
-    cell.value = value
-
-
-def column_idx(char):
-    return ord(char.upper()) - ord('A') + 1
 
 
 iteration_times = 1000

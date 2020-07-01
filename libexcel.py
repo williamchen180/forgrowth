@@ -1,8 +1,12 @@
-
 import pickle
 import requests
 import os
 import json
+
+
+def calculate_percentage(buy, sell):
+    return (sell - buy) / buy
+
 
 def convert_to_str(input):
     if type(input) is str:
@@ -19,8 +23,10 @@ def load_cell(s, r, c):
     x.value = convert_to_str(x.value)
     return x
 
+
 def load_value(s, r, c):
     return load_cell(s, r, c).value
+
 
 def set_cell(s, r, c, value):
     cell = s.cell(row=r, column=c)
@@ -33,6 +39,10 @@ def column_number(s):
     for i in range(0, len(s)):
         ret = ret * 26 + ord(s[i]) - ord('A') + 1
     return ret
+
+
+def column_idx(char):
+    return ord(char.upper()) - ord('A') + 1
 
 
 def get_history(symbol, unix_sod, unix_today):
@@ -76,4 +86,3 @@ def get_history(symbol, unix_sod, unix_today):
             pickle.dump(history, f)
 
         return get_history(symbol, unix_sod, unix_today)
-
